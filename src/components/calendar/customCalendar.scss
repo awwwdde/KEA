@@ -1,0 +1,89 @@
+@import '../../graphics/styles/colors.scss';
+
+.custom-calendar-container {
+  width: 300px;
+  height: 300px;
+  border-radius: 15px; // Закругление всего контейнера
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.1); // Полупрозрачный фон
+  backdrop-filter: blur(10px); // Эффект размытия
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); // Тень для глубины
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between; // Разделяем элементы по краям
+  align-items: center;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.2); // Полупрозрачный фон для заголовка
+  color: $menu-color; // Цвет текста заголовка
+}
+
+.calendar-title {
+  font-size: 1.2em; // Увеличиваем размер шрифта для заголовка
+}
+
+.calendar-controls {
+  button {
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.3); // Полупрозрачный фон для кнопок
+    transition: background-color 0.3s; // Плавный переход
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.5); // Изменение фона при наведении
+    }
+  }
+}
+
+.calendar {
+  border-radius: 0 0 15px 15px; // Закругление только нижних углов
+  display: flex;
+  flex-direction: column;
+}
+
+.calendar-weekdays {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+}
+
+.calendar-weekday {
+  flex: 1;
+  text-align: center;
+  font-weight: bold;
+  margin: 0; // Убираем отступы
+  color: #ff5722; // Цвет текста дней недели
+}
+
+.calendar-days {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.calendar-day {
+  width: 14.28%; // 100% / 7 дней
+  text-align: center;
+  padding: 10px 0;
+  box-sizing: border-box;
+  margin: 0; // Убираем отступы
+  transition: background-color 0.3s; // Плавный переход для фона
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.2); // Эффект при наведении
+  }
+}
+
+.calendar-day.previous,
+.calendar-day.next {
+  color: #aaa; // Цвет дней прошлого и следующего месяца
+}
+
+.calendar-day.today {
+  border-radius: 10px;
+  background-color: #ff5722; // Цвет активного дня
+  color: white;
+}
