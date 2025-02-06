@@ -5,7 +5,7 @@ import PersonCard from '../personcard/PersonCard'
 import EventCard from '../eventcard/EventCard';
 import usePagination from '../hooks/usePagination';
 import Pagination from '../pagination/Pagination';
-
+import './combinedlist.scss';
 const CombinedList = ({ 
   people, 
   events, 
@@ -21,7 +21,7 @@ const CombinedList = ({
   const { pageData, pageCount } = usePagination(items, pageSize, currentPage);
 
   return (
-    <div className="combined-list">
+    <div className="combined">
       <ToggleSwitch isPeople={isPeople} setIsPeople={setIsPeople} />
 
       <div className="grid">

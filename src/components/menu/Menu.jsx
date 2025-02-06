@@ -11,11 +11,6 @@ const Menu = () => {
         <FaHome />
       </div>
       </Link>
-      <Link to="/calendar" className="sidebar-item">
-      <div className="icon-container">
-      <FaUser  />
-      </div>
-      </Link>
       <Link to="/options" className="sidebar-item">
       <div className="icon-container">
         <FaCog />

@@ -1,4 +1,5 @@
 import React from 'react';
+import './addform.scss';
 
 const AddForm = ({
   formType,
@@ -16,7 +17,7 @@ const AddForm = ({
   eventDescription,
   setEventDescription,
   handleAddOrUpdate,
-  editIndex,
+  editId,
   nameError,
   birthdayError,
   eventDateError,
@@ -24,7 +25,7 @@ const AddForm = ({
   eventDescriptionError,
 }) => {
   return (
-    <form onSubmit={(e) => { e.preventDefault(); handleAddOrUpdate(); }}>
+    <form onSubmit={(e) => { e.preventDefault(); handleAddOrUpdate(); }} className='form'>
       <div>
         <button type="button" onClick={() => setFormType('person')}>Добавить человека</button>
         <button type="button" onClick={() => setFormType('event')}>Добавить событие</button>
@@ -45,7 +46,7 @@ const AddForm = ({
             onChange={(e) => setBirthday(e.target.value)}
           />
           {birthdayError && <span className="error">Дата рождения обязательна</span>}
-          <textarea
+          <input
             value={info}
             onChange={(e) => setInfo(e.target.value)}
             placeholder="Информация"
@@ -67,7 +68,7 @@ const AddForm = ({
             placeholder="Название события"
           />
           {eventNameError && <span className="error">Название события обязательно</span>}
-          <textarea
+          <input
             value={eventDescription}
             onChange={(e) => setEventDescription(e.target.value)}
             placeholder="Описание события"
@@ -75,7 +76,7 @@ const AddForm = ({
           {eventDescriptionError && <span className="error">Описание события обязательно</span>}
         </>
       )}
-      <button type="submit">{editIndex !== null ? 'Обновить' : 'Добавить'}</button>
+      <button type="submit">{editId !== null ? 'Обновить' : 'Добавить'}</button>
     </form>
   );
 };

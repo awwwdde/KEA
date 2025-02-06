@@ -47,7 +47,7 @@ const EvenCom = ({ events }) => {
       ) : (
         upcomingEvents.length > 0 && (
           <div className="event-item">
-            {upcomingEvents[0].name} - {upcomingEvents[0].description} (Дата: {upcomingEvents[0].date.toLocaleDateString()})
+            {upcomingEvents[0].name} - {upcomingEvents[0].description} ({upcomingEvents[0].date.toLocaleDateString()})
           </div>
         )
       )}

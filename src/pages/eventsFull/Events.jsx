@@ -168,7 +168,7 @@ const EventsPage = () => {
           eventDescription={eventDescription}
           setEventDescription={setEventDescription}
           handleAddOrUpdate={handleAddOrUpdate}
-          editIndex={editId !== null}
+          editId={editId}
           nameError={nameError}
           birthdayError={birthdayError}
           eventDateError={eventDateError}

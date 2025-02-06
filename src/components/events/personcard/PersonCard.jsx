@@ -1,13 +1,13 @@
 // src/components/PersonCard.js
 import React from 'react';
-
+import './personcard.scss';
 const PersonCard = ({ person, deletePerson, editPerson }) => {
   return (
-    <div className="person-card">
+    <div className="person">
       <h3>{person.name}</h3>
-      <p>Дата рождения: {person.birthday}</p>
-      {person.info && <p>Информация: {person.info}</p>}
-      <div className="actions">
+      <p>{person.birthday}</p>
+      {person.info && <p>{person.info}</p>}
+      <div className="person-actions">
         <button onClick={editPerson}>Редактировать</button>
         <button onClick={deletePerson}>Удалить</button>
       </div>

@@ -1,16 +1,16 @@
 @import '../../graphics/styles/colors.scss';
 .main {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
     height: 100vh;
     background-color: $comp-color-bg;
     color: $text-color;
     text-align: center;
-   &-block{
+    &-block{
     display: flex;
-    flex-direction: column;
-    padding-top: 15px;
+    flex-direction: row;
+    padding-left: 30px;
    }
 }
