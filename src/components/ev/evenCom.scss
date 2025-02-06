@@ -1,7 +1,8 @@
 @import '../../graphics/styles/colors.scss';
-.clock {
+.today-events {
     width: 300px; // Ширина как у календаря
-    height: 100px; // Высота компонента
+    // height: 75px; // Высота компонента
+    padding: 15px;
     border-radius: 15px; // Закругление всего контейнера
     overflow: hidden;
     background: rgba(255, 255, 255, 0.1); // Полупрозрачный фон
@@ -16,6 +17,17 @@
     &-container{
       display: flex;
       flex-direction: column;
-      font-weight: 700;
+    }
+    h2 {
+        font-weight: normal;
+        font-size: 1em;
+      margin-bottom: 5px;
+    }
+    .event-item {
+        font-weight: 900;
+      margin-bottom: 10px;
+      padding-top: 1px;
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.1); // Полупрозрачный фон
     }
   }

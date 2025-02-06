@@ -3,109 +3,27 @@
 
 .events {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  align-items: flex-start;
-  padding-top: 30px;
-  height: 100vh; // Высота страницы
-}
-
-.events-container {
-  color: #333;
-  padding: 40px 20px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.1); // Полупрозрачный фон
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  max-width: 800px;
-  width: 100%; // Ширина контейнера
-}
-
-.search-container {
-  margin-bottom: 20px;
-}
-
-.form-section {
-  margin-bottom: 20px;
-}
-
-.content-container {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 50px; // Отступ между формой и контентом
-}
-
-.people-section, .events-section {
-  width: 48%; // Уменьшаем ширину для отступа
-  margin: 0 1%; // Отступ между блоками
-}
-
-.scrollable {
-  max-height: 300px; // Установите желаемую высоту
-  overflow-y: auto; // Добавляем прокрутку
-  border: 1px solid #ddd; // Легкая граница
-  padding: 10px;
-  border-radius: 5px;
-  background: rgba(255, 255, 255, 0.05); // Полупрозрачный фон для карточек
-}
-
-.person-block, .event-block {
-  margin-bottom: 10px;
-  padding: 10px;
-  border: 1px solid #ddd; // Легкая граница
-  border-radius: 5px;
-  background: rgba(255, 255, 255, 0.1); // Полупрозрачный фон для карточек
-  transition: background 0.3s; // Плавный переход
-}
-
-.person-block:hover, .event-block:hover {
-  background: rgba(255, 255, 255, 0.2); // Эффект при наведении
-}
-
-h1, h2 {
-  text-align: left; // Убрана централизация заголовков
-}
-
-input, textarea, select {
-  margin: 5px 0;
-  padding: 10px; // Увеличиваем размер
-  border: 1px solid #ccc; // Легкая граница
-  border-radius: 5px; // Округление
-  width: 100%;
-  background: rgba(255, 255, 255, 0.1); // Полупрозрачный фон
-  transition: border-color 0.3s; // Плавный переход
-}
-
-input:focus, textarea:focus, select:focus {
-  border-color: #888; // Цвет границы при фокусе
-  outline: none; // Убираем обводку
-}
-
-.action-text {
+  height: 100vh;
+  background-color: $comp-color-bg;
+  color: $text-color;
   text-align: center;
-  cursor: pointer;
-  color: #464646; // Цвет текста
-  margin-top: 10px;
-  background: transparent; // Убираем фон
-  border: none; // Убираем бордер
-  padding: 5px; // Увеличиваем область нажатия
-  border-radius: 5px; // Округление
-  transition: background 0.3s; // Плавный переход
+  &-container{
+    display: flex;
+    flex-direction: column;
+    padding-top: 15px;
+   }
 }
 
-.action-text:hover {
-  background: rgba(0, 123, 255, 0.1); // Эффект при наведении
-}
+// .events-container {
+//   color: #333;
+//   padding: 40px 20px;
+//   border-radius: 12px;
+//   background: rgba(255, 255, 255, 0.1); // Полупрозрачный фон
+//   backdrop-filter: blur(10px);
+//   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+//   width: 100%; // Ширина контейнера
+// }
 
-/* Скрытие скроллбара */
-.scrollable::-webkit-scrollbar {
-  width: 8px;
-}
-
-.scrollable::-webkit-scrollbar-thumb {
-  background: rgba(200, 200, 200, 0.5);
-  border-radius: 10px;
-}
-
-.scrollable::-webkit-scrollbar-thumb:hover {
-  background: rgba(200, 200, 200, 0.8);
-}

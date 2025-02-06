@@ -1,0 +1,16 @@
+@import '../../graphics/styles/colors.scss';
+.opti{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: $comp-color-bg;
+    color: $subtext-color;
+    text-align: center;
+    &-block{
+        display: flex;
+        flex-direction: column;
+        padding-top: 15px;
+    }
+}

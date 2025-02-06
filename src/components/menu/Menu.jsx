@@ -16,7 +16,7 @@ const Menu = () => {
       <FaUser  />
       </div>
       </Link>
-      <Link to="/settings" className="sidebar-item">
+      <Link to="/options" className="sidebar-item">
       <div className="icon-container">
         <FaCog />
       </div>

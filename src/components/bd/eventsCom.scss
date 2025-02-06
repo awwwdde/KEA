@@ -1,7 +1,7 @@
 @import '../../graphics/styles/colors.scss';
 .today-birthdays {
     width: 300px; // Ширина как у календаря
-    height: 100px; // Высота компонента
+    padding: 15px;
     border-radius: 15px; // Закругление всего контейнера
     overflow: hidden;
     background: rgba(255, 255, 255, 0.1); // Полупрозрачный фон
@@ -18,13 +18,14 @@
       flex-direction: column;
     }
     h2 {
-        font-size: 16px;
-      margin-bottom: 10px;
+      font-weight: normal;
+        font-size: 1em;
+        margin-bottom: 5px;
     }
     .birthday-item {
+      font-weight: 900;
       margin-bottom: 10px;
-      padding: 10px;
-      border: 1px solid #ccc;
+      padding-top: 1px;
       border-radius: 5px;
       background: rgba(255, 255, 255, 0.1); // Полупрозрачный фон
     }

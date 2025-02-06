@@ -4,7 +4,7 @@ import electronIsDev from 'electron-is-dev';
 
 const createWindow = () => {
   const win = new BrowserWindow({
-    width: 1200,
+    width: 1000,
     height: 800,
     webPreferences: {
       nodeIntegration: true,

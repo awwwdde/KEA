@@ -20,7 +20,9 @@
 }
 
 .calendar-title {
-  font-size: 1.2em; // Увеличиваем размер шрифта для заголовка
+  font-size: 1.2em; 
+  font-weight: 700;// Увеличиваем размер шрифта для заголовка
+  text-transform: uppercase;
 }
 
 .calendar-controls {
@@ -60,8 +62,13 @@
 }
 
 .calendar-days {
+  font-weight: 700;
   display: flex;
   flex-wrap: wrap;
+  cursor: pointer;
+  :hover{
+    color: #ff5722;
+  }
 }
 
 .calendar-day {
