@@ -7,6 +7,33 @@
 
 - [@awwwdde](https://www.github.com/awwwdde)
 
+## Run Locally
+
+Clone the project
+
+```bash
+  git clone https://github.com/awwwdde/KEA.git
+```
+
+Go to the project directory
+
+```bash
+  cd KEA
+```
+
+Install dependencies
+
+```bash
+  npm install
+```
+
+Start the server
+
+```bash
+  npm run electron:dev
+```
+
+
 
 ## License
 
