@@ -30,7 +30,7 @@ const AddForm = ({
         <button type="button" onClick={() => setFormType('person')}>Добавить человека</button>
         <button type="button" onClick={() => setFormType('event')}>Добавить событие</button>
       </div>
-
+      <div className="form-type">
       {formType === 'person' && (
         <>
           <input
@@ -76,6 +76,8 @@ const AddForm = ({
           {eventDescriptionError && <span className="error">Описание события обязательно</span>}
         </>
       )}
+      </div>
+      
       <button type="submit">{editId !== null ? 'Обновить' : 'Добавить'}</button>
     </form>
   );

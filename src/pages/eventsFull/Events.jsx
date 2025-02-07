@@ -146,6 +146,28 @@ const EventsPage = () => {
     setEditId(id);
   };
 
+  const filteredPeople = people.filter(person => {
+    const searchLower = searchTerm.toLowerCase();
+    return (
+      person.name.toLowerCase().includes(searchLower) ||
+      person.birthday.includes(searchLower) ||
+      (person.info && person.info.toLowerCase().includes(searchLower))
+    );
+  });
+
+  const filteredEvents = events.filter(event => {
+    const searchLower = searchTerm.toLowerCase();
+    return (
+      event.name.toLowerCase().includes(searchLower) ||
+      event.date.includes(searchLower) ||
+      (event.description && event.description.toLowerCase().includes(searchLower))
+    );
+  });
+
+  // Сбрасываем страницу при изменении поискового запроса
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [searchTerm]);
   return (
     <div className="events">
       <div className="events-container">
@@ -178,8 +200,10 @@ const EventsPage = () => {
       </div>
       <div className="events-container">
         <CombinedList 
-          people={people} 
-          events={events} 
+          people={filteredPeople} // Передаем отфильтрованных людей
+          events={filteredEvents}
+          // people={people} 
+          // events={events} 
           deletePerson={deletePerson} 
           deleteEvent={deleteEvent} 
           currentPage={currentPage} 

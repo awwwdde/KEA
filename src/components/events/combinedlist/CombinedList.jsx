@@ -16,7 +16,7 @@ const CombinedList = ({
   startEditing 
 }) => {
   const [isPeople, setIsPeople] = useState(true);
-  const pageSize = 2;
+  const pageSize = 1;
   const items = isPeople ? people : events;
   const { pageData, pageCount } = usePagination(items, pageSize, currentPage);
 
@@ -24,7 +24,7 @@ const CombinedList = ({
     <div className="combined">
       <ToggleSwitch isPeople={isPeople} setIsPeople={setIsPeople} />
 
-      <div className="grid">
+      <div className="combined-grid">
         {pageData.map((item) => (
           isPeople ? (
             <PersonCard 

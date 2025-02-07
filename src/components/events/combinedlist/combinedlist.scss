@@ -13,4 +13,7 @@
     align-items: center; // Центрируем содержимое
     font-size: 1em; // Размер шрифта
     color: $menu-color; // Цвет текста
+    &-grid{
+        padding-top: 15px;
+    }
 }
