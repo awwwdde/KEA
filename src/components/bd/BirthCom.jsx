@@ -38,9 +38,9 @@ const EventsCom = ({ people, events }) => {
     return (
       <div className="today-birthdays">
         {todayBirthdays.length > 0 ? (
-          <h2>Сегодня день рождения у:</h2>
+          <h2></h2>
         ) : (
-          <h2>Ближайший день рождения:</h2>
+          <h2></h2>
         )}
         {todayBirthdays.length > 0 ? (
           todayBirthdays.map((birthday, index) => (

@@ -1,7 +1,7 @@
 @import '../../graphics/styles/colors.scss';
 .today-events {
     width: 300px; // Ширина как у календаря
-    // height: 75px; // Высота компонента
+    height: 75px; // Высота компонента
     padding: 15px;
     border-radius: 15px; // Закругление всего контейнера
     overflow: hidden;
@@ -12,22 +12,20 @@
     justify-content: center; // Центрируем содержимое
     flex-direction: column;
     align-items: center; // Центрируем содержимое
-    font-size: 1em; // Размер шрифта
-    color: $menu-color; // Цвет текста
+    font-size: 16px; // Размер шрифта
+    font-weight: bold;
+    
     &-container{
       display: flex;
       flex-direction: column;
     }
-    h2 {
-        font-weight: normal;
-        font-size: 1em;
-      margin-bottom: 5px;
-    }
+ 
     .event-item {
-        font-weight: 900;
-      margin-bottom: 10px;
-      padding-top: 1px;
+      color: #ff5722;
+      font-weight: 900;
+      // margin-bottom: 10px;
+      // padding-top: 1px;
       border-radius: 5px;
-      background: rgba(255, 255, 255, 0.1); // Полупрозрачный фон
+      // background: rgba(255, 255, 255, 0.1); // Полупрозрачный фон
     }
   }

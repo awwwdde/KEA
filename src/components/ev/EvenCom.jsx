@@ -34,9 +34,9 @@ const EvenCom = ({ events }) => {
   return (
     <div className="today-events">
       {todayEvents.length > 0 ? (
-        <h2>Сегодня события:</h2>
+        <h2></h2>
       ) : (
-        <h2>Ближайшее событие:</h2>
+        <h2></h2>
       )}
       {todayEvents.length > 0 ? (
         todayEvents.map((event, index) => (
