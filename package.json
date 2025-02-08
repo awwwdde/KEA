@@ -1,6 +1,6 @@
 {
   "name": "karashi",
-  "version": "0.1.0",
+  "version": "0.01KEA-beta",
   "private": true,
   "main": "public/electron.mjs",
   "homepage": "./",
