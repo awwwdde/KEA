@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { FaBirthdayCake, FaCalendarAlt, FaEdit, FaTrash, FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import './main.scss';
 
 const Main = () => {
@@ -17,7 +18,8 @@ const Main = () => {
     const [editingEvent, setEditingEvent] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [searchQuery, setSearchQuery] = useState("");
-    const itemsPerPage = 5;
+    const [selectedDate, setSelectedDate] = useState(null);
+    const itemsPerPage = 2;
 
     useEffect(() => {
         const timer = setInterval(() => setCurrentTime(new Date()), 1000);
@@ -66,6 +68,44 @@ const Main = () => {
         return days;
     };
 
+    const getEventsByDate = (date) => {
+        if (!date) return [];
+        const targetDate = new Date(date);
+        targetDate.setHours(0,0,0,0);
+        return events.filter(event => {
+            const eventDate = new Date(event.date);
+            eventDate.setHours(0,0,0,0);
+            return eventDate.getTime() === targetDate.getTime();
+        });
+    };
+
+    const getUpcomingEvents = () => {
+        const baseDate = selectedDate || new Date();
+        baseDate.setHours(0,0,0,0);
+        
+        return events
+            .map(event => ({...event, date: new Date(event.date)}))
+            .filter(event => {
+                const eventDate = new Date(event.date);
+                eventDate.setHours(0,0,0,0);
+                return eventDate >= baseDate;
+            })
+            .sort((a, b) => a.date - b.date)
+            .slice(0, 3);
+    };
+
+    const handleDayClick = (date) => {
+        if (!date) return;
+        
+        const today = new Date();
+        today.setHours(0,0,0,0);
+        date.setHours(0,0,0,0);
+
+        date.getTime() === today.getTime() 
+            ? setSelectedDate(null) 
+            : setSelectedDate(date);
+    };
+
     const filteredEvents = events.filter(event => 
         event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         (event.person?.toLowerCase().includes(searchQuery.toLowerCase()))
@@ -75,15 +115,6 @@ const Main = () => {
         (currentPage - 1) * itemsPerPage,
         currentPage * itemsPerPage
     );
-
-    const getClosestEvent = () => {
-        const today = new Date();
-        today.setHours(0,0,0,0);
-        return events
-            .map(event => ({...event, date: new Date(event.date)}))
-            .filter(event => new Date(event.date) >= today)
-            .sort((a, b) => a.date - b.date)[0] || null;
-    };
 
     return (
         <div className="main">
@@ -102,7 +133,10 @@ const Main = () => {
 
                 <div className="main-bento__box main-bento__box--small">
                     <form onSubmit={handleAddEvent} className="event-form">
-                        <select value={newEvent.type} onChange={e => setNewEvent({...newEvent, type: e.target.value})}>
+                        <select 
+                            value={newEvent.type} 
+                            onChange={e => setNewEvent({...newEvent, type: e.target.value})}
+                        >
                             <option value="event">Событие</option>
                             <option value="birthday">День рождения</option>
                         </select>
@@ -125,37 +159,86 @@ const Main = () => {
                             value={newEvent.date}
                             onChange={e => setNewEvent({...newEvent, date: e.target.value})}
                         />
-                        <button type="submit">{editingEvent ? 'Обновить' : 'Добавить'}</button>
-                        {editingEvent && <button type="button" onClick={() => setEditingEvent(null)}>Отмена</button>}
+                        <button type="submit">
+                            {editingEvent ? 'Обновить' : 'Добавить'}
+                        </button>
+                        {editingEvent && (
+                            <button 
+                                type="button" 
+                                onClick={() => {
+                                    setNewEvent({ type: "event", title: "", date: "", person: "" });
+                                    setEditingEvent(null);
+                                }}
+                            >
+                                Отмена
+                            </button>
+                        )}
                     </form>
                 </div>
 
                 <div className="main-bento__box main-bento__box--small">
-                    {getClosestEvent() ? (
-                        <div className="next-event">
-                            <div className="event-type">
-                                {getClosestEvent().type === 'birthday' ? '🎂 День рождения' : '📅 Событие'}
+                    <div className="events-preview">
+                        {!selectedDate && (
+                            <>
+                                <h3>Сегодня:</h3>
+                                {getEventsByDate(new Date()).length > 0 ? (
+                                    getEventsByDate(new Date()).map(event => (
+                                        <div key={event.id} className="event-preview-item">
+                                            {event.type === 'birthday' 
+                                                ? <FaBirthdayCake className="event-icon" /> 
+                                                : <FaCalendarAlt className="event-icon" />}
+                                            <div>
+                                                <p>{event.type === 'birthday' ? event.person : event.title}</p>
+                                                <small>{new Date(event.date).toLocaleTimeString()}</small>
+                                            </div>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <p className="no-events">Событий на сегодня нет</p>
+                                )}
+                            </>
+                        )}
+                        
+                        <h3>{selectedDate ? 'События на выбранную дату' : 'Ближайшие события'}</h3>
+                        {getUpcomingEvents().map(event => (
+                            <div key={event.id} className="event-preview-item">
+                                {event.type === 'birthday' 
+                                    ? <FaBirthdayCake className="event-icon" /> 
+                                    : <FaCalendarAlt className="event-icon" />}
+                                <div>
+                                    <p>{event.type === 'birthday' ? event.person : event.title}</p>
+                                    <small>
+                                        {new Date(event.date).toLocaleDateString('ru-RU', {
+                                            day: 'numeric',
+                                            month: 'long',
+                                            year: 'numeric'
+                                        })}
+                                    </small>
+                                </div>
                             </div>
-                            <div className="event-name">
-                                {getClosestEvent().type === 'birthday' ? getClosestEvent().person : getClosestEvent().title}
-                            </div>
-                            <div className="event-date">
-                                {new Date(getClosestEvent().date).toLocaleDateString('ru-RU', { 
-                                    day: 'numeric', 
-                                    month: 'long', 
-                                    year: 'numeric' 
-                                })}
-                            </div>
-                        </div>
-                    ) : <p>Нет предстоящих событий</p>}
+                        ))}
+                        
+                        {selectedDate && (
+                            <button 
+                                className="reset-date"
+                                onClick={() => setSelectedDate(null)}
+                            >
+                                Показать текущие события
+                            </button>
+                        )}
+                    </div>
                 </div>
 
                 <div className="main-bento__box main-bento__box--small">
                     <div className="calendar">
                         <div className="calendar-header">
-                            <button onClick={() => setCurrentDate(new Date(currentDate.setMonth(currentDate.getMonth() - 1)))}>←</button>
+                            <button onClick={() => setCurrentDate(new Date(currentDate.setMonth(currentDate.getMonth() - 1)))}>
+                                <FaArrowLeft />
+                            </button>
                             <h3>{currentDate.toLocaleDateString('ru-RU', { month: 'long', year: 'numeric' })}</h3>
-                            <button onClick={() => setCurrentDate(new Date(currentDate.setMonth(currentDate.getMonth() + 1)))}>→</button>
+                            <button onClick={() => setCurrentDate(new Date(currentDate.setMonth(currentDate.getMonth() + 1)))}>
+                                <FaArrowRight />
+                            </button>
                         </div>
                         <div className="calendar-grid">
                             {['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'].map(day => (
@@ -165,6 +248,7 @@ const Main = () => {
                                 const isCurrentMonth = date?.getMonth() === currentDate.getMonth();
                                 const isToday = date?.toDateString() === new Date().toDateString();
                                 const hasEvent = events.some(event => date && new Date(event.date).toDateString() === date.toDateString());
+                                const isSelected = selectedDate && date?.toDateString() === selectedDate.toDateString();
                                 
                                 return (
                                     <div 
@@ -172,7 +256,9 @@ const Main = () => {
                                         className={`calendar-day 
                                             ${isToday ? 'today' : ''} 
                                             ${hasEvent ? 'has-event' : ''} 
-                                            ${!isCurrentMonth ? 'not-current-month' : ''}`}
+                                            ${!isCurrentMonth ? 'not-current-month' : ''}
+                                            ${isSelected ? 'selected' : ''}`}
+                                        onClick={() => handleDayClick(date)}
                                     >
                                         {date ? date.getDate() : ''}
                                     </div>
@@ -193,27 +279,37 @@ const Main = () => {
                             />
                         </div>
                         <h3>Все события:</h3>
-                        {currentEvents.map(event => (
-                            <div key={event.id} className="event-item">
-                                <span>{event.type === 'birthday' ? '🎂' : '📅'}</span>
-                                <div>
-                                    <p>{event.type === 'birthday' ? event.person : event.title}</p>
-                                    <small>{new Date(event.date).toLocaleDateString()}</small>
+                        <div className="events-container">
+                            {currentEvents.map(event => (
+                                <div key={event.id} className="event-item">
+                                    {event.type === 'birthday' 
+                                        ? <FaBirthdayCake className="event-icon" /> 
+                                        : <FaCalendarAlt className="event-icon" />}
+                                    <div>
+                                        <p>{event.type === 'birthday' ? event.person : event.title}</p>
+                                        <small>{new Date(event.date).toLocaleDateString()}</small>
+                                    </div>
+                                    <div className="event-actions">
+                                        <FaEdit className="action-icon" onClick={() => handleEditEvent(event)} />
+                                        <FaTrash className="action-icon" onClick={() => handleDeleteEvent(event.id)} />
+                                    </div>
                                 </div>
-                                <button onClick={() => handleEditEvent(event)}>✏️</button>
-                                <button onClick={() => handleDeleteEvent(event.id)}>🗑️</button>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                         <div className="pagination">
                             <button 
                                 onClick={() => setCurrentPage(p => Math.max(1, p - 1))} 
                                 disabled={currentPage === 1}
-                            >Назад</button>
+                            >
+                                <FaArrowLeft />
+                            </button>
                             <span>Страница {currentPage}</span>
                             <button 
                                 onClick={() => setCurrentPage(p => p + 1)} 
                                 disabled={currentPage * itemsPerPage >= filteredEvents.length}
-                            >Вперед</button>
+                            >
+                                <FaArrowRight />
+                            </button>
                         </div>
                     </div>
                 </div>

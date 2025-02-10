@@ -1,19 +1,6 @@
-$color-background: #f8fafc;
-$color-primary: #818cf8;
-$color-primary-hover: #6366f1;
-$color-text: #0f172a;
-$color-text-secondary: #64748b;
-$color-border: #e2e8f0;
-$color-surface: rgba(255, 255, 255, 0.98);
-$color-hover: #f1f5f9;
-$color-disabled: #cbd5e1;
-$color-accent: #94a3b8;
+@import '../../graphics/variables.scss';
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+
 
 .main {
     display: flex;
@@ -118,29 +105,44 @@ $color-accent: #94a3b8;
     }
 }
 
-.next-event {
+.events-preview {
+    height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    height: 100%;
-    text-align: center;
+    gap: 1rem;
+    overflow-y: auto;
 
-    .event-type {
+    h3 {
         color: $color-primary;
-        font-size: 0.95rem;
-        margin-bottom: 12px;
+        margin-bottom: 0.5rem;
+        font-size: 1.1rem;
+    }
+}
+
+.event-preview-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.8rem;
+    background: rgba(255,255,255,0.9);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+
+    .event-icon {
+        font-size: 1.5rem;
+        color: $color-primary;
+        flex-shrink: 0;
     }
 
-    .event-name {
-        font-size: 1.4rem;
+    p {
+        margin: 0;
         font-weight: 500;
-        color: $color-text;
-        margin: 8px 0;
+        font-size: 0.95rem;
     }
 
-    .event-date {
+    small {
         color: $color-text-secondary;
-        font-size: 0.95rem;
+        font-size: 0.8rem;
     }
 }
 
@@ -223,6 +225,11 @@ $color-accent: #94a3b8;
         &.not-current-month {
             color: lighten($color-text-secondary, 25%);
         }
+
+        &.selected {
+            background: rgba($color-primary, 0.2);
+            border: 2px solid $color-primary;
+        }
     }
 
     &-day-header {
@@ -250,9 +257,7 @@ $color-accent: #94a3b8;
         &:focus {
             outline: none;
             border-color: $color-primary;
-            box-shadow: 
-                0 0 0 3px rgba($color-primary, 0.1),
- 0 2px 6px rgba(0,0,0,0.05);
+            box-shadow: 0 0 0 3px rgba($color-primary, 0.1);
         }
 
         &::placeholder {
@@ -265,84 +270,130 @@ $color-accent: #94a3b8;
 .events-list {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    height: 100%;
+
+    .events-container {
+        flex: 1;
+        overflow-y: auto;
+        margin: 8px 0;
+        padding-right: 4px;
+    }
 
     .event-item {
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        padding: 12px;
-        border: 1px solid $color-border;
+        padding: 12px 16px;
+        margin: 8px 0;
+        background: rgba(255, 255, 255, 0.6);
         border-radius: 8px;
-        background: $color-surface;
-        transition: background 0.2s;
+        border: 1px solid $color-border;
+        transition: all 0.2s;
 
         &:hover {
-            background: $color-hover;
+            border-color: $color-primary;
         }
 
-        span {
-            font-size: 1.5rem;
+        .event-icon {
+            font-size: 1.8rem;
+            margin-right: 12px;
+            flex-shrink: 0;
         }
 
-        div {
+        .event-details {
             flex: 1;
-            margin: 0 12px;
+            min-width: 0;
 
-            p {
-                margin: 0;
+            h4 {
+                font-size: 1rem;
                 font-weight: 500;
                 color: $color-text;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
 
-            small {
+            p {
+                font-size: 0.9rem;
                 color: $color-text-secondary;
-                font-size: 0.85rem;
+                margin-top: 4px;
             }
         }
 
-        button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: $color-primary;
-            font-size: 1.2rem;
-            transition: color 0.2s;
+        .event-actions {
+            flex-shrink: 0;
+            display: flex;
+            gap: 8px;
 
-            &:hover {
-                color: $color-primary-hover;
+            button {
+                background: none;
+                border: none;
+                padding: 8px;
+                cursor: pointer;
+                opacity: 0.7;
+
+                &:hover {
+                    opacity: 1;
+                    color: $color-primary;
+                }
             }
         }
     }
+}
 
-    .pagination {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 12px;
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    padding-top: 16px;
+    margin-top: auto;
 
-        button {
-            background: $color-primary;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.2s;
+    button {
+        height: 36px;
+        min-width: 80px;
+        padding: 0 16px;
+        border: 1px solid $color-border;
+        border-radius: 6px;
+        background: transparent;
+        color: $color-text-secondary;
+        cursor: pointer;
+        transition: all 0.2s;
 
-            &:hover {
-                background: $color-primary-hover;
-            }
-
-            &:disabled {
-                background: $color-disabled;
-                cursor: not-allowed;
-            }
+        &:hover:not(:disabled) {
+            border-color: $color-primary;
+            color: $color-primary;
         }
 
-        span {
-            font-weight: 500;
-            color: $color-text;
+        &:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
+    }
+
+    span {
+        color: $color-accent;
+        font-size: 0.9rem;
+    }
+}
+
+.no-events {
+    color: $color-text-secondary;
+    font-size: 0.9rem;
+    text-align: center;
+    padding: 1rem;
+}
+
+.reset-date {
+    margin-top: auto;
+    padding: 0.75rem;
+    background: $color-primary;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &:hover {
+        background: $color-primary-hover;
     }
 }

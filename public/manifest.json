@@ -1,8 +1,8 @@
 {
-    "name": "KarashiElectronApp",
+    "name": "KEA",
     "short_name": "KEA",
     "description": "Desktop application built with Electron and React",
-    "version": "1.0.0",
+    "version": "0.02KEA-beta",
     "author": "awwwdde",
     "icons": [
       {

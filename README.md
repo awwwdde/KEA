@@ -1,4 +1,4 @@
-# KEA - KU ELECTRON APP
+# KEA 
 А small application for convenient notes about any holidays or events in the year, with the ability to add new data.
 
 ## Run Locally
@@ -36,6 +36,6 @@ Start the server
 #### NOT FOR SALE  
  For commercial use, please contact the author.
 
-#### VERSION 0.01KEA-beta
+#### VERSION 0.02KEA-beta
 
 
