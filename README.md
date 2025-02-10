@@ -36,6 +36,6 @@ Start the server
 #### NOT FOR SALE  
  For commercial use, please contact the author.
 
-#### VERSION 0.02KEA-beta
+#### VERSION 0.03KEA-beta
 
 

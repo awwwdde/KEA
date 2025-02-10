@@ -2,7 +2,7 @@
     "name": "KEA",
     "short_name": "KEA",
     "description": "Desktop application built with Electron and React",
-    "version": "0.02KEA-beta",
+    "version": "0.03KEA-beta",
     "author": "awwwdde",
     "icons": [
       {

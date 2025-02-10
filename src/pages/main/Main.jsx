@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaBirthdayCake, FaCalendarAlt, FaEdit, FaTrash, FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import { FaBirthdayCake, FaCalendarAlt, FaEdit, FaTrash, FaArrowLeft, FaArrowRight, FaHome } from 'react-icons/fa';
 import './main.scss';
 
 const Main = () => {
@@ -12,14 +12,15 @@ const Main = () => {
         type: "event",
         title: "",
         date: "",
-        person: ""
+        person: "",
+        isYearly: false
     });
     const [currentDate, setCurrentDate] = useState(new Date());
     const [editingEvent, setEditingEvent] = useState(null);
-    const [currentPage, setCurrentPage] = useState(1);
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedDate, setSelectedDate] = useState(null);
-    const itemsPerPage = 2;
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 1;
 
     useEffect(() => {
         const timer = setInterval(() => setCurrentTime(new Date()), 1000);
@@ -33,14 +34,25 @@ const Main = () => {
     const handleAddEvent = (e) => {
         e.preventDefault();
         if (newEvent.title && newEvent.date) {
-            if (editingEvent) {
-                setEvents(events.map(ev => ev.id === editingEvent.id ? 
-                    {...newEvent, id: editingEvent.id} : ev));
-                setEditingEvent(null);
-            } else {
-                setEvents([...events, {...newEvent, id: Date.now()}]);
-            }
-            setNewEvent({ type: "event", title: "", date: "", person: "" });
+            const date = new Date(newEvent.date);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const formattedDate = `${year}-${month}-${day}`;
+
+            const updatedEvent = {
+                ...newEvent,
+                date: formattedDate,
+                id: editingEvent?.id || Date.now()
+            };
+
+            const newEvents = editingEvent 
+                ? events.map(ev => ev.id === editingEvent.id ? updatedEvent : ev)
+                : [...events, updatedEvent];
+
+            setEvents(newEvents);
+            setNewEvent({ type: "event", title: "", date: "", person: "", isYearly: false });
+            setEditingEvent(null);
         }
     };
 
@@ -49,7 +61,12 @@ const Main = () => {
     };
 
     const handleEditEvent = (event) => {
-        setNewEvent(event);
+        const date = new Date(event.date);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const formattedDate = `${year}-${month}-${day}`;
+        setNewEvent({...event, date: formattedDate});
         setEditingEvent(event);
     };
 
@@ -68,42 +85,86 @@ const Main = () => {
         return days;
     };
 
-    const getEventsByDate = (date) => {
+    const getEventsForDate = (date) => {
         if (!date) return [];
         const targetDate = new Date(date);
-        targetDate.setHours(0,0,0,0);
+        targetDate.setHours(0, 0, 0, 0);
+        
         return events.filter(event => {
             const eventDate = new Date(event.date);
-            eventDate.setHours(0,0,0,0);
+            eventDate.setHours(0, 0, 0, 0);
+            
+            if (event.isYearly) {
+                const currentYear = targetDate.getFullYear();
+                const yearlyDate = new Date(currentYear, eventDate.getMonth(), eventDate.getDate());
+                yearlyDate.setHours(0, 0, 0, 0);
+                return yearlyDate.getTime() === targetDate.getTime();
+            }
+            
             return eventDate.getTime() === targetDate.getTime();
         });
     };
 
-    const getUpcomingEvents = () => {
-        const baseDate = selectedDate || new Date();
-        baseDate.setHours(0,0,0,0);
+const getUpcomingEvents = () => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
         
         return events
-            .map(event => ({...event, date: new Date(event.date)}))
             .filter(event => {
                 const eventDate = new Date(event.date);
-                eventDate.setHours(0,0,0,0);
-                return eventDate >= baseDate;
+                eventDate.setHours(0, 0, 0, 0);
+                
+                if (event.isYearly) {
+                    const currentYear = today.getFullYear();
+                    const nextOccurrence = new Date(currentYear, eventDate.getMonth(), eventDate.getDate());
+                    nextOccurrence.setHours(0, 0, 0, 0);
+                    return nextOccurrence >= today;
+                }
+                
+                return eventDate >= today;
             })
-            .sort((a, b) => a.date - b.date)
-            .slice(0, 3);
+            .sort((a, b) => {
+                const aDate = new Date(a.isYearly 
+                    ? new Date(today.getFullYear(), new Date(a.date).getMonth(), new Date(a.date).getDate())
+                    : a.date);
+                
+                const bDate = new Date(b.isYearly 
+                    ? new Date(today.getFullYear(), new Date(b.date).getMonth(), new Date(b.date).getDate())
+                    : b.date);
+                
+                return aDate - bDate;
+            })
+            .slice(0, 1); // Изменено с 3 на 1
     };
 
     const handleDayClick = (date) => {
         if (!date) return;
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        date.setHours(0, 0, 0, 0);
+        setSelectedDate(date.getTime() === today.getTime() ? null : new Date(date));
+    };
+
+    const getDisplayEvents = () => {
+        if (selectedDate) {
+            return {
+                today: getEventsForDate(selectedDate),
+                upcoming: []
+            };
+        }
         
         const today = new Date();
-        today.setHours(0,0,0,0);
-        date.setHours(0,0,0,0);
+        today.setHours(0, 0, 0, 0);
+        
+        const todayEvents = getEventsForDate(today);
+        const upcomingEvents = getUpcomingEvents()
+            .filter(e => !todayEvents.some(te => te.id === e.id))
+            .slice(0, 3);
 
-        date.getTime() === today.getTime() 
-            ? setSelectedDate(null) 
-            : setSelectedDate(date);
+        return {
+            today: todayEvents,
+            upcoming: upcomingEvents
+        };
     };
 
     const filteredEvents = events.filter(event => 
@@ -115,6 +176,45 @@ const Main = () => {
         (currentPage - 1) * itemsPerPage,
         currentPage * itemsPerPage
     );
+
+    const EventCard = ({ event, showActions }) => {
+        const eventDate = new Date(event.date);
+        const displayDate = event.isYearly 
+            ? new Date(new Date().getFullYear(), eventDate.getMonth(), eventDate.getDate())
+            : new Date(event.date);
+        
+        displayDate.setHours(0, 0, 0, 0);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const isToday = displayDate.getTime() === today.getTime();
+
+        return (
+            <div className="event-card">
+                <div className="card-header">
+                    <span className="event-date">
+                        {isToday ? 'Сегодня' : displayDate.toLocaleDateString('ru-RU')}
+                        {event.isYearly && ' (ежегодно)'}
+                    </span>
+                    {event.type === 'birthday' && (
+                        <span className="event-badge">🎂 День рождения</span>
+                    )}
+                </div>
+                <div className="card-content">
+                    <h4>{event.type === 'birthday' ? event.person : event.title}</h4>
+                </div>
+                {showActions && (
+                    <div className="card-actions">
+                        <button className="edit-btn" onClick={() => handleEditEvent(event)}>
+                            <FaEdit />
+                        </button>
+                        <button className="delete-btn" onClick={() => handleDeleteEvent(event.id)}>
+                            <FaTrash />
+                        </button>
+                    </div>
+                )}
+            </div>
+        );
+    };
 
     return (
         <div className="main">
@@ -159,6 +259,15 @@ const Main = () => {
                             value={newEvent.date}
                             onChange={e => setNewEvent({...newEvent, date: e.target.value})}
                         />
+                        <label className="checkbox-label">
+                            <input
+                                type="checkbox"
+                                checked={newEvent.isYearly}
+                                onChange={e => setNewEvent({...newEvent, isYearly: e.target.checked})}
+                            />
+                            <span className="checkmark"></span>
+                            Ежегодное событие
+                        </label>
                         <button type="submit">
                             {editingEvent ? 'Обновить' : 'Добавить'}
                         </button>
@@ -166,7 +275,7 @@ const Main = () => {
                             <button 
                                 type="button" 
                                 onClick={() => {
-                                    setNewEvent({ type: "event", title: "", date: "", person: "" });
+                                    setNewEvent({ type: "event", title: "", date: "", person: "", isYearly: false });
                                     setEditingEvent(null);
                                 }}
                             >
@@ -178,54 +287,53 @@ const Main = () => {
 
                 <div className="main-bento__box main-bento__box--small">
                     <div className="events-preview">
-                        {!selectedDate && (
-                            <>
-                                <h3>Сегодня:</h3>
-                                {getEventsByDate(new Date()).length > 0 ? (
-                                    getEventsByDate(new Date()).map(event => (
-                                        <div key={event.id} className="event-preview-item">
-                                            {event.type === 'birthday' 
-                                                ? <FaBirthdayCake className="event-icon" /> 
-                                                : <FaCalendarAlt className="event-icon" />}
-                                            <div>
-                                                <p>{event.type === 'birthday' ? event.person : event.title}</p>
-                                                <small>{new Date(event.date).toLocaleTimeString()}</small>
-                                            </div>
-                                        </div>
-                                    ))
-                                ) : (
-                                    <p className="no-events">Событий на сегодня нет</p>
-                                )}
-                            </>
-                        )}
-                        
-                        <h3>{selectedDate ? 'События на выбранную дату' : 'Ближайшие события'}</h3>
-                        {getUpcomingEvents().map(event => (
-                            <div key={event.id} className="event-preview-item">
-                                {event.type === 'birthday' 
-                                    ? <FaBirthdayCake className="event-icon" /> 
-                                    : <FaCalendarAlt className="event-icon" />}
-                                <div>
-                                    <p>{event.type === 'birthday' ? event.person : event.title}</p>
-                                    <small>
-                                        {new Date(event.date).toLocaleDateString('ru-RU', {
-                                            day: 'numeric',
-                                            month: 'long',
-                                            year: 'numeric'
-                                        })}
-                                    </small>
+                        <div className="preview-header">
+                            <h3>
+                                {selectedDate 
+                                    ? new Date(selectedDate).toLocaleDateString('ru-RU')
+                                    : 'События'}
+                            </h3>
+                            {selectedDate && (
+                                <button 
+                                    className="reset-date"
+                                    onClick={() => setSelectedDate(null)}
+                                >
+                                    <FaHome /> Сегодня
+                                </button>
+                            )}
+                        </div>
+                        <div className="events-grid">
+                            {getDisplayEvents().today.length > 0 && (
+                                <div className="events-group">
+                                    <h4>{selectedDate ? 'События на выбранную дату' : 'Сегодня'}</h4>
+                                    {getDisplayEvents().today.map(event => (
+                                        <EventCard 
+                                            key={event.id} 
+                                            event={event} 
+                                            showActions={false} 
+                                        />
+                                    ))}
                                 </div>
-                            </div>
-                        ))}
-                        
-                        {selectedDate && (
-                            <button 
-                                className="reset-date"
-                                onClick={() => setSelectedDate(null)}
-                            >
-                                Показать текущие события
-                            </button>
-                        )}
+                            )}
+
+                            {!selectedDate && getDisplayEvents().upcoming.length > 0 && (
+                                <div className="events-group">
+                                    <h4>Ближайшие события</h4>
+                                    {getDisplayEvents().upcoming.map(event => (
+                                        <EventCard 
+                                            key={event.id} 
+                                            event={event} 
+                                            showActions={false} 
+                                        />
+                                    ))}
+                                </div>
+                            )}
+
+                            {getDisplayEvents().today.length === 0 && 
+                             getDisplayEvents().upcoming.length === 0 && (
+                                <p className="no-events">Событий не найдено</p>
+                            )}
+                        </div>
                     </div>
                 </div>
 
@@ -246,9 +354,21 @@ const Main = () => {
                             ))}
                             {getDaysInMonth().map((date, index) => {
                                 const isCurrentMonth = date?.getMonth() === currentDate.getMonth();
-                                const isToday = date?.toDateString() === new Date().toDateString();
-                                const hasEvent = events.some(event => date && new Date(event.date).toDateString() === date.toDateString());
-                                const isSelected = selectedDate && date?.toDateString() === selectedDate.toDateString();
+                                const today = new Date();
+                                today.setHours(0, 0, 0, 0);
+                                const isToday = date?.toDateString() === today.toDateString();
+                                
+                                const hasEvent = events.some(event => {
+                                    const eventDate = new Date(event.date);
+                                    if (event.isYearly) {
+                                        return date?.getDate() === eventDate.getDate() && 
+                                               date?.getMonth() === eventDate.getMonth();
+                                    }
+                                    return date?.toDateString() === new Date(event.date).toDateString();
+                                });
+                                
+                                const isSelected = selectedDate && 
+                                    date?.setHours(0, 0, 0, 0) === selectedDate.setHours(0, 0, 0, 0);
                                 
                                 return (
                                     <div 
@@ -278,22 +398,13 @@ const Main = () => {
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
                         </div>
-                        <h3>Все события:</h3>
                         <div className="events-container">
                             {currentEvents.map(event => (
-                                <div key={event.id} className="event-item">
-                                    {event.type === 'birthday' 
-                                        ? <FaBirthdayCake className="event-icon" /> 
-                                        : <FaCalendarAlt className="event-icon" />}
-                                    <div>
-                                        <p>{event.type === 'birthday' ? event.person : event.title}</p>
-                                        <small>{new Date(event.date).toLocaleDateString()}</small>
-                                    </div>
-                                    <div className="event-actions">
-                                        <FaEdit className="action-icon" onClick={() => handleEditEvent(event)} />
-                                        <FaTrash className="action-icon" onClick={() => handleDeleteEvent(event.id)} />
-                                    </div>
-                                </div>
+                                <EventCard 
+                                    key={event.id} 
+                                    event={event} 
+                                    showActions={true} 
+                                />
                             ))}
                         </div>
                         <div className="pagination">

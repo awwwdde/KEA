@@ -1,6 +1,6 @@
 {
   "name": "KEA",
-  "version": "0.02KEA-beta",
+  "version": "0.03KEA-beta",
   "private": true,
   "main": "public/electron.mjs",
   "homepage": "./",
@@ -24,8 +24,8 @@
     "electron:package": "npm run build && electron-builder build -mwl -c.electronVersion=28.1.0"
   },
   "build": {
-    "appId": "karashi.electron",
-    "productName": "Karashi",
+    "appId": "kea.electron",
+    "productName": "KEA",
     "directories": {
       "buildResources": "public"
     },
