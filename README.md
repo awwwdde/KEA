@@ -1,41 +1,7 @@
-# KEA 
-А small application for convenient notes about any holidays or events in the year, with the ability to add new data.
+# Tauri + React
 
-## Run Locally
+This template should help get you started developing with Tauri and React in Vite.
 
-Clone the project
+## Recommended IDE Setup
 
-```bash
-  git clone https://github.com/awwwdde/KEA.git
-```
-
-Go to the project directory
-
-```bash
-  cd KEA
-```
-
-Install dependencies
-
-```bash
-  npm install
-```
-
-Start the server
-
-```bash
-  npm run electron:dev
-```
-
-## Authors
-
-- [@awwwdde](https://www.github.com/awwwdde)
-
-## License
-
-#### NOT FOR SALE  
- For commercial use, please contact the author.
-
-#### VERSION 0.03KEA-beta
-
-
+- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)

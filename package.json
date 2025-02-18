@@ -1,84 +1,27 @@
 {
-  "name": "KEA",
-  "version": "0.0.3",
-  "description": "small app",
-  "author": "awwwdde",
+  "name": "pwia",
   "private": true,
-  "main": "build/electron.mjs",
-  "homepage": "./",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "tauri": "tauri"
+  },
   "dependencies": {
-    "react": "^19.0.0",
-    "react-calendar": "^5.1.0",
-    "react-dom": "^19.0.0",
+    "@tauri-apps/api": "^2",
+    "@tauri-apps/plugin-opener": "^2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-icons": "^5.4.0",
     "react-router-dom": "^7.1.5",
-    "react-scripts": "^5.0.1",
-    "sass": "^1.83.4"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "electron:dev": "concurrently -k \"cross-env BROWSER=none npm start\" \"wait-on http://localhost:3000 && electron .\"",
-    "preelectron:package": "copyfiles public/electron.mjs build && react-scripts build",
-    "electron:package": "electron-builder build --win --config.extraMetadata.mac=null",
-    "postinstall": "electron-builder install-app-deps"
-  },
-  "build": {
-    "appId": "kea.electron",
-    "productName": "KEA",
-    "win": {
-      "target": "nsis",
-      "extraResources": [
-        {
-          "from": "public",
-          "to": "resources",
-          "filter": [
-            "**/*",
-            "!**/*.dylib",
-            "!**/darwin/**"
-          ]
-        }
-      ]
-    },
-    "directories": {
-      "buildResources": "public",
-      "output": "dist"
-    },
-    "files": [
-      "build/**/*",
-      "public/electron.mjs",
-      "!**/node_modules"
-    ],
-    "mac": null,
-    "linux": null,
-    "extends": null
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "sass": "^1.85.0"
   },
   "devDependencies": {
-    "@parcel/watcher": "^2.5.1",
-    "@types/electron-is-dev": "^0.3.0",
-    "7zip-bin": "^5.1.1",
-    "concurrently": "^9.1.2",
-    "copyfiles": "^2.4.1",
-    "cross-env": "^7.0.3",
-    "electron": "^34.0.2",
-    "electron-is-dev": "3.0.1",
-    "wait-on": "^8.0.2"
+    "@tauri-apps/cli": "^2",
+    "@vitejs/plugin-react": "^4.3.4",
+    "sass-embedded": "^1.85.0",
+    "vite": "^6.0.3"
   }
 }
