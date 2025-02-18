@@ -12,6 +12,7 @@
   "app": {
     "windows": [
       {
+        "transparent": true,  
         "title": "KEA",
         "width": 1200,
         "resizable": false,
