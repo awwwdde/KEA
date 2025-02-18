@@ -1,7 +1,15 @@
-# Tauri + React
+# KEA
 
-This template should help get you started developing with Tauri and React in Vite.
+А small application for convenient notes about any holidays or events in the year, with the ability to add new data.
 
-## Recommended IDE Setup
 
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+
+## Authors
+
+- [@awwwdde](https://www.github.com/awwwdde)
+
+
+## License
+
+#### NOT FOR SALE  
+
