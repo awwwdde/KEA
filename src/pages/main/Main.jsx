@@ -134,7 +134,7 @@ const getUpcomingEvents = () => {
                 
                 return aDate - bDate;
             })
-            .slice(0, 1); // Изменено с 3 на 1
+            .slice(0, 1); 
     };
 
     const handleDayClick = (date) => {

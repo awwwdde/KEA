@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "pwia",
+  "productName": "KEA",
   "version": "0.1.0",
   "identifier": "com.pwia.app",
   "build": {
@@ -13,7 +13,7 @@
     "windows": [
       {
         "transparent": true,  
-        "title": "KEA",
+        "title": "KEA by awwwdde",
         "width": 1200,
         "resizable": false,
         "height": 800

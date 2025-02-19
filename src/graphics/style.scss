@@ -9,9 +9,9 @@
   body {
     font-family: Arial, sans-serif;
     background-color: #f9f9f9;
-    height: 100vh; // Занимает всю высоту viewport
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden; // Убираем скролл на уровне body
+    overflow: hidden; 
   }
