@@ -1,15 +1,2 @@
-# KEA
-
-Birthday calendar app
-
-
-
-## Authors
-
-- [@awwwdde](https://www.github.com/awwwdde)
-
-
-## License
-
-#### NOT FOR SALE  
-
+<p align="center"><img src="https://i.imgur.com/KJ8fOUB.png" alt="project-image"></p>
+<p id="description" align="center">A modern desktop application built with Tauri that combines calendar functionality with event management and real-time features.</p>
